@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16
+    container_name: postgres_db_2
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    ports:
+      - "5434:5432" # ホスト 5434 → コンテナ 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: fastapi_app_2
+    restart: always
+    ports:
+      - "8001:8001" # ホスト 8001 → コンテナ 8001
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/mydb
+      SECRET_KEY: "本番では推測されにくいランダムな文字列にする"   # ← 追加
+      ALGORITHM: "HS256"                                        # ← 追加
+      ACCESS_TOKEN_EXPIRE_MINUTES: "60"                         # ← 追加
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app # ホットリロード用
+      - avatar_uploads:/app/uploads/avatars # 追加：アバター画像保存先（共有）
+
+  frontend:
+    build: ./frontend
+    container_name: nextjs_app_2
+    restart: always
+    ports:
+      - "3001:3001" # ホスト 3001 → コンテナ 3001
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8001
+      NEXT_PUBLIC_BASE_URL: http://localhost:3001 # 追加：画像表示時のベースURL
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - avatar_uploads:/app/public/uploads/avatars # 追加：アバター画像配信先（共有）
+
+volumes:
+  postgres_data:
+  avatar_uploads: # 追加：backend/frontend で共有する名前付きボリューム
