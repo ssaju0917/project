@@ -17,7 +17,22 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return user
+    user_personalities = crud.get_user_personalities_by_user_id(db, user_id=user_id)
+    user_characters = crud.get_user_characters_by_user_id(db, user_id=user_id)
+
+    return UserResponse(
+        id=user.id,
+        name=user.name,
+        email=user.email,
+        is_active=user.is_active,
+        birth_date=user.birth_date,
+        bio=user.bio,
+        avatar_url=user.avatar_url,
+        permission_level=user.permission_level,
+        created_at=user.created_at,
+        personalities=user_personalities,
+        characters=user_characters
+    )
 
 @router.post("/", response_model=UserResponse, status_code=201)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):

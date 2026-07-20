@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { User, UserUpdate } from "@/types/user";
+import { usePersonalities, useCharacters } from "@/hooks/useMasterOptions";
 import ProfileTagSelector from "./ProfileTagSelector";
+
+const MAX_PERSONALITIES = 5;
+const MAX_CHARACTERS = 5;
 
 type Props = {
   user: User;
@@ -19,6 +23,15 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
   const [error, setError]         = useState<string | null>(null);
   const [success, setSuccess]     = useState(false);
   const [permissionLevel, setPermissionLevel] = useState(user.permission_level);
+  const [personalityIds, setPersonalityIds] = useState(
+    user.personalities.map((p) => p.id)
+  );
+  const [characterIds, setCharacterIds] = useState(
+    user.characters.map((c) => c.id)
+  );
+
+  const { items: personalityOptions, loading: personalitiesLoading } = usePersonalities();
+  const { items: characterOptions, loading: charactersLoading } = useCharacters();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +46,8 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
         bio: bio || null,
         avatar_url: avatarUrl || null,
         permission_level: permissionLevel,
+        personality_ids: personalityIds,
+        character_ids: characterIds,
       });
       setSuccess(true);
     } catch (e) {
@@ -160,7 +175,27 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
             <option value={2}>管理者</option>
           </select>
         </div>
-        <ProfileTagSelector />
+        {/* 性格・特徴 */}
+        <div className="space-y-4">
+          <ProfileTagSelector
+            label="性格"
+            options={personalityOptions}
+            selectedIds={personalityIds}
+            onChange={setPersonalityIds}
+            max={MAX_PERSONALITIES}
+            color="blue"
+            loading={personalitiesLoading}
+          />
+          <ProfileTagSelector
+            label="特徴"
+            options={characterOptions}
+            selectedIds={characterIds}
+            onChange={setCharacterIds}
+            max={MAX_CHARACTERS}
+            color="green"
+            loading={charactersLoading}
+          />
+        </div>
       </div>
 
 

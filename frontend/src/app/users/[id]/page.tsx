@@ -116,6 +116,44 @@ export default function UserDetailPage() {
                 </dd>
               </div>
             )}
+            <div className="sm:col-span-2">
+              <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                性格
+              </dt>
+              <dd className="mt-1.5 flex flex-wrap gap-1.5">
+                {user.personalities.length > 0 ? (
+                  user.personalities.map((p) => (
+                    <span
+                      key={p.id}
+                      className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700"
+                    >
+                      {p.name}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-sm text-gray-400">未設定</span>
+                )}
+              </dd>
+            </div>
+            <div className="sm:col-span-2">
+              <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                特徴
+              </dt>
+              <dd className="mt-1.5 flex flex-wrap gap-1.5">
+                {user.characters.length > 0 ? (
+                  user.characters.map((c) => (
+                    <span
+                      key={c.id}
+                      className="text-xs font-medium px-2.5 py-1 rounded-full bg-green-100 text-green-700"
+                    >
+                      {c.name}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-sm text-gray-400">未設定</span>
+                )}
+              </dd>
+            </div>
           </dl>
         </div>
 

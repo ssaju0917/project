@@ -1,7 +1,9 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
+from app.models.master import Personality, Character
 from app.schemas.user import UserCreate, UserUpdate
 from app.core.security import hash_password
+from app.models.master import Userpersonality, Usercharacter
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     """ユーザー一覧取得"""
@@ -29,9 +31,22 @@ def update_user(db: Session, user_id: int, user: UserUpdate):
     db_user.bio = user.bio
     db_user.avatar_url = user.avatar_url
     db_user.permission_level = user.permission_level
+    # 選択された性格・特徴IDから対象レコードを取得し、関連をまとめて置き換える
+    for personality_id in user.personality_ids:
+        if not db.query(Userpersonality).filter(Userpersonality.user_id == user_id, Userpersonality.personality_id == personality_id).first():
+            db_user_personalities = Userpersonality(user_id=user_id, personality_id=personality_id)
+            db.add(db_user_personalities)
+    for character_id in user.character_ids:
+        if not db.query(Usercharacter).filter(Usercharacter.user_id == user_id, Usercharacter.character_id == character_id).first():
+            db_user_characters = Usercharacter(user_id=user_id, character_id=character_id)
+            db.add(db_user_characters)
+    # 既存の関連を削除する（選択されなかった性格・特徴を削除）
+    db.query(Userpersonality).filter(Userpersonality.user_id == user_id, ~Userpersonality.personality_id.in_(user.personality_ids)).delete(synchronize_session=False)
+    db.query(Usercharacter).filter(Usercharacter.user_id == user_id, ~Usercharacter.character_id.in_(user.character_ids)).delete(synchronize_session=False)
+    
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return db_user  
 
 def delete_user(db: Session, user_id: int):
     """ユーザー削除"""

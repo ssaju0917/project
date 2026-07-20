@@ -18,7 +18,7 @@ export default function middleware(request: NextRequest) {
 
   // ログイン済みでログイン画面・新規登録画面を開いた場合はプロフィールへ
   if (token && isPublic) {
-    return NextResponse.redirect(new URL("/profile", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
