@@ -24,6 +24,9 @@ export default function Header() {
           <span className="text-sm text-gray-400">読み込み中...</span>
         ) : user ? (
           <div className="flex items-center gap-4">
+            <Link href="/diary" className="text-sm text-blue-600 hover:underline">
+              日記
+            </Link>
             <span className="text-sm text-gray-700">
               {user.name} さん
             </span>

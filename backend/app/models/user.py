@@ -16,8 +16,13 @@ class User(Base):
     bio = Column(Text, nullable=True)           # 追加：自己紹介
     avatar_url = Column(String, nullable=True)         # 追加：プロフィール画像URL
     permission_level = Column(Integer, default=1)        # 追加：権限レベル(1:一般ユーザー, 2:管理者)
+    occupation = Column(String, nullable=True)         # 追加：職業
+    study_content = Column(String, nullable=True)      # 追加：学習内容
+    dream = Column(Text, nullable=True)                # 追加：将来の夢
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # リレーションシップの定義
     user_personalities = relationship("Userpersonality", back_populates="user", cascade="all, delete-orphan")
     user_characters = relationship("Usercharacter", back_populates="user", cascade="all, delete-orphan")
+    diary_entries = relationship("DiaryEntry", back_populates="user", cascade="all, delete-orphan")
+    tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")

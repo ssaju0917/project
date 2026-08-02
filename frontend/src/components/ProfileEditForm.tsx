@@ -19,6 +19,9 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
   const [birthDate, setBirthDate] = useState(user.birth_date ?? "");
   const [bio, setBio]             = useState(user.bio ?? "");
   const [avatarUrl, setAvatarUrl] = useState(user.avatar_url ?? "");
+  const [occupation, setOccupation] = useState(user.occupation ?? "");
+  const [studyContent, setStudyContent] = useState(user.study_content ?? "");
+  const [dream, setDream] = useState(user.dream ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError]         = useState<string | null>(null);
   const [success, setSuccess]     = useState(false);
@@ -46,6 +49,9 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
         bio: bio || null,
         avatar_url: avatarUrl || null,
         permission_level: permissionLevel,
+        occupation: occupation || null,
+        study_content: studyContent || null,
+        dream: dream || null,
         personality_ids: personalityIds,
         character_ids: characterIds,
       });
@@ -118,6 +124,34 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
           />
         </div>
 
+        {/* 職業 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            職業
+          </label>
+          <input
+            type="text"
+            value={occupation}
+            onChange={(e) => setOccupation(e.target.value)}
+            placeholder="例：会社員、学生、フリーランス"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        {/* 学習内容 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            学習内容
+          </label>
+          <input
+            type="text"
+            value={studyContent}
+            onChange={(e) => setStudyContent(e.target.value)}
+            placeholder="例：Typescript, Python"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
         {/* 生年月日 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -141,6 +175,20 @@ export default function ProfileEditForm({ user, onSubmit }: Props) {
             onChange={(e) => setBio(e.target.value)}
             rows={4}
             placeholder="自己紹介を入力してください"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          />
+        </div>
+
+        {/* 将来の夢 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            将来の夢
+          </label>
+          <textarea
+            value={dream}
+            onChange={(e) => setDream(e.target.value)}
+            rows={3}
+            placeholder="将来の夢を入力してください"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
           />
         </div>

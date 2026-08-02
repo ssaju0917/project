@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import user_router
 from app.routers import auth_router  # auth_router を追加
 from app.routers import master_router  # master_router を追加
+from app.routers import diary_router  # diary_router を追加
+from app.routers import task_router  # task_router を追加
 
 app = FastAPI(title="My API", version="1.0.0")
 
@@ -23,6 +25,8 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(auth_router)  # auth_router を追加
 app.include_router(master_router)  # master_router を追加
+app.include_router(diary_router)  # diary_router を追加
+app.include_router(task_router)  # task_router を追加
 
 @app.get("/")
 def read_root():

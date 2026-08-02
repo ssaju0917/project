@@ -2,13 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.user import UserCreate, UserUpdate, UserResponse
+from app.core.dependencies import get_current_admin_user
 from app import crud
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/", response_model=list[UserResponse])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    """ユーザー一覧取得"""
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user=Depends(get_current_admin_user)):
+    """ユーザー一覧取得（管理者専用）"""
     return crud.get_users(db, skip=skip, limit=limit)
 
 @router.get("/{user_id}", response_model=UserResponse)
@@ -29,6 +30,9 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
         bio=user.bio,
         avatar_url=user.avatar_url,
         permission_level=user.permission_level,
+        occupation=user.occupation,
+        study_content=user.study_content,
+        dream=user.dream,
         created_at=user.created_at,
         personalities=user_personalities,
         characters=user_characters
@@ -48,8 +52,8 @@ def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
     return updated
 
 @router.delete("/{user_id}", response_model=UserResponse)
-def delete_user(user_id: int, db: Session = Depends(get_db)):
-    """ユーザー削除"""
+def delete_user(user_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_admin_user)):
+    """ユーザー削除（管理者専用）"""
     user = crud.delete_user(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")

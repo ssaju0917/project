@@ -24,7 +24,7 @@ export default function LoginForm() {
       const data = await api.post<Token>("/auth/login", body);
       Cookies.set("access_token", data.access_token, { expires: 1 }); // 1日保持
       await refreshUser(); // ← 追加
-      router.push("/"); // ログイン後の遷移先（既存のプロフィール画面）
+      router.push("/diary"); // ログイン後の遷移先（日記トップ画面）
     } catch (err) {
       setError("メールアドレスまたはパスワードが違います");
     } finally {

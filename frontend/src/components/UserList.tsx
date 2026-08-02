@@ -2,10 +2,9 @@
 
 import { useUsers } from "@/hooks/useUsers";
 import UserCard from "./UserCard";
-import UserForm from "./UserForm";
 
 export default function UserList() {
-  const { users, loading, error, createUser, deleteUser } = useUsers();
+  const { users, loading, error, deleteUser } = useUsers();
 
   if (loading) {
     return (
@@ -25,8 +24,6 @@ export default function UserList() {
 
   return (
     <div>
-      <UserForm onSubmit={createUser} />
-
       <h2 className="text-lg font-semibold text-gray-800 mb-4">
         ユーザー一覧
         <span className="ml-2 text-sm font-normal text-gray-400">

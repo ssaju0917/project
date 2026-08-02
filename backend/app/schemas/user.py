@@ -17,6 +17,9 @@ class UserUpdate(BaseModel):
     bio: Optional[str] = None
     avatar_url: Optional[str] = None
     permission_level: Optional[int] = None
+    occupation: Optional[str] = None     # 追加：職業
+    study_content: Optional[str] = None  # 追加：学習内容
+    dream: Optional[str] = None          # 追加：将来の夢
     personality_ids: list[int] = []  # 追加：選択された性格IDの配列
     character_ids: list[int] = []    # 追加：選択された特徴IDの配列
 
@@ -30,6 +33,9 @@ class UserResponse(BaseModel):
     bio: Optional[str] = None
     avatar_url: Optional[str] = None
     permission_level: Optional[int] = None
+    occupation: Optional[str] = None     # 追加：職業
+    study_content: Optional[str] = None  # 追加：学習内容
+    dream: Optional[str] = None          # 追加：将来の夢
     created_at: datetime
     personalities: list[PersonalityOut] = []  # 追加：選択済み性格（名前つき）
     characters: list[CharacterOut] = []       # 追加：選択済み特徴（名前つき）

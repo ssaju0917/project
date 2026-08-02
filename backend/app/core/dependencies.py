@@ -21,3 +21,9 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     if user is None:
         raise HTTPException(status_code=401, detail="ユーザーが見つかりません")
     return user
+
+
+def get_current_admin_user(current_user=Depends(get_current_user)):
+    if current_user.permission_level != 2:
+        raise HTTPException(status_code=403, detail="管理者権限が必要です")
+    return current_user

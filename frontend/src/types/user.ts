@@ -19,6 +19,9 @@ export type User = {
   bio: string | null;          // 追加
   avatar_url: string | null;   // 追加
   permission_level: number;    // 追加
+  occupation: string | null;      // 追加：職業
+  study_content: string | null;   // 追加：学習内容
+  dream: string | null;           // 追加：将来の夢
   created_at: string;
   personalities: Personality[]; // 追加：選択済み性格
   characters: Character[];      // 追加：選択済み特徴
@@ -38,6 +41,9 @@ export type UserUpdate = {
   bio: string | null;
   avatar_url: string | null;
   permission_level: number;
+  occupation: string | null;      // 追加：職業
+  study_content: string | null;   // 追加：学習内容
+  dream: string | null;           // 追加：将来の夢
   personality_ids: number[];   // 追加：選択された性格IDの配列
   character_ids: number[];     // 追加：選択された特徴IDの配列
 };

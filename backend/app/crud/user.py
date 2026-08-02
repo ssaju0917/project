@@ -31,6 +31,9 @@ def update_user(db: Session, user_id: int, user: UserUpdate):
     db_user.bio = user.bio
     db_user.avatar_url = user.avatar_url
     db_user.permission_level = user.permission_level
+    db_user.occupation = user.occupation
+    db_user.study_content = user.study_content
+    db_user.dream = user.dream
     # 選択された性格・特徴IDから対象レコードを取得し、関連をまとめて置き換える
     for personality_id in user.personality_ids:
         if not db.query(Userpersonality).filter(Userpersonality.user_id == user_id, Userpersonality.personality_id == personality_id).first():

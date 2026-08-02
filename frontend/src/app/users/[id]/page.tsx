@@ -106,6 +106,32 @@ export default function UserDetailPage() {
                 </dd>
               </div>
             )}
+            <div>
+              <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                職業
+              </dt>
+              <dd className="mt-1 text-sm text-gray-800">
+                {user.occupation ?? "未設定"}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                学習内容
+              </dt>
+              <dd className="mt-1 text-sm text-gray-800">
+                {user.study_content ?? "未設定"}
+              </dd>
+            </div>
+            {user.dream && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                  将来の夢
+                </dt>
+                <dd className="mt-1 text-sm text-gray-800 whitespace-pre-wrap">
+                  {user.dream}
+                </dd>
+              </div>
+            )}
             {user.permission_level !== null && (
               <div className="sm:col-span-2">
                 <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">
