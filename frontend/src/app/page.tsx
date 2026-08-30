@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
   const { user, loading, logout } = useAuth();
+  console.log("mainの内容");
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto px-4 py-10">
